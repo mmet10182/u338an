@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content_dir %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">имя файла</th>
+                <th scope="col">годен от</th>
+                <th scope="col">годен до</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for name, attribs in content_dir.items %}
+                    <p>
+                    {% if attribs.type == 'File' %}
+                        {% if '.cer' in attribs.filetype or '.key' in attribs.filetype or '.p12' in attribs.filetype %}
+                            <tr>
+                                <th scope="col"><a href={% url "download" name %}></p>{{name}}</a></th>
+                                <th scope="col"><label>{{attribs.valid_from}}</label></th>
+                                <th scope="col"><label>{{attribs.valid_to}}</label></th>
+                            </tr>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+{% endblock %}

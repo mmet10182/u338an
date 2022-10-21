@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block create_cert_p12 %}
+     <div class="col-4">
+        <form method="post">
+            {% csrf_token %}
+            <select name="cert"  class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" required>
+                <option selected disabled>Выберите сертификат</option>
+                {% for name in p12_file_name %}
+                        <option value={{name}}>{{name}}</option>
+                {% endfor %}
+            </select>
+            <input type="password" class="form-control" name="password" placeholder="Введите пароль" required><br>
+            <input type="submit" class="btn btn-primary mb-2" value="Скачать" >
+        </form>
+     </div>
+{% endblock %}

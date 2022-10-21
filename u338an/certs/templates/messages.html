@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block messages %}
+    {{cert}}
+    {% if cert %}
+        {{cert}}
+        {{key}}
+    {% endif %}
+    {% if cert_name_p12 is None %}
+        Нужно выбрать сертификат!
+    {% endif %}
+{% endblock %}

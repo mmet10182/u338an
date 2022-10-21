@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block create_cert %}
+      <div class="col-4">
+          <form method="post">
+              {% csrf_token %}
+              <label>Имя сертификата: </label>
+              <input class="form-control type="text" name="cn" required maxlength="30" size="30">
+              <!--<label>email: </label>
+              <input class="form-control type="email" name="emailaddr" required maxlength="30" size="30"> -->
+              <br>
+              <input type="submit" class="btn btn-primary mb-2" value="Скачать">
+           </form>
+       </div>
+{% endblock %}
