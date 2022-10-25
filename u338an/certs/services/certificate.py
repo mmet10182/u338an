@@ -88,6 +88,7 @@ def get_content_dir():
         path_cert = os.path.join(path, i)
         cert = False
         if os.path.isfile(path_cert):
+            print(path_cert, os.path.isfile(path_cert))
             # Only files are read, folders are ignored
             try:
                 """Read all files if the file is a certificate then the cert variable will contain the properties of 
@@ -98,20 +99,20 @@ def get_content_dir():
             except UnicodeDecodeError:
                 cert = False
 
-        if cert:
-            valid_from = datetime.strptime(cert.get_notBefore().decode('ascii'), '%Y%m%d%H%M%SZ')
-            valid_to = datetime.strptime(cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
-            filename, file_extension = os.path.splitext(i)
-            content_dir_attrib[i] = {'type': 'File',
-                                     'filetype': file_extension,
-                                     'filename': filename,
-                                     'valid_from': str(valid_from),
-                                     'valid_to': str(valid_to)}
-        else:
-            filename, file_extension = os.path.splitext(i)
-            content_dir_attrib[i] = {'type': 'File',
-                                     'filetype': file_extension,
-                                     'filename': filename,
-                                     }
-
+            if cert:
+                valid_from = datetime.strptime(cert.get_notBefore().decode('ascii'), '%Y%m%d%H%M%SZ')
+                valid_to = datetime.strptime(cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
+                filename, file_extension = os.path.splitext(i)
+                content_dir_attrib[i] = {'type': 'File',
+                                         'filetype': file_extension,
+                                         'filename': filename,
+                                         'valid_from': str(valid_from),
+                                         'valid_to': str(valid_to)}
+            else:
+                filename, file_extension = os.path.splitext(i)
+                content_dir_attrib[i] = {'type': 'File',
+                                         'filetype': file_extension,
+                                         'filename': filename,
+                                         }
+    print(content_dir_attrib)
     return content_dir_attrib
