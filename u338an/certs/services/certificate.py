@@ -85,23 +85,33 @@ def get_content_dir():
     content_dir_attrib = dict()
 
     for i in content_dir:
-        path_cert = '{}{}'.format(path, i)
+        path_cert = os.path.join(path, i)
+        cert = False
         if os.path.isfile(path_cert):
+            # Only files are read, folders are ignored
             try:
+                """Read all files if the file is a certificate then the cert variable will contain the properties of 
+                the certificate """
                 cert = crypto.load_certificate(crypto.FILETYPE_PEM, open(path_cert).read())
             except OpenSSL.crypto.Error:
-                pass
+                cert = False
             except UnicodeDecodeError:
-                pass
+                cert = False
 
+        if cert:
             valid_from = datetime.strptime(cert.get_notBefore().decode('ascii'), '%Y%m%d%H%M%SZ')
             valid_to = datetime.strptime(cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
-            if os.path.isfile(os.path.join(path, i)):
-                filename, file_extension = os.path.splitext(i)
-                content_dir_attrib[i] = {'type': 'File',
-                                         'filetype': file_extension,
-                                         'filename': filename,
-                                         'valid_from': str(valid_from),
-                                         'valid_to': str(valid_to)}
-            else: pass
+            filename, file_extension = os.path.splitext(i)
+            content_dir_attrib[i] = {'type': 'File',
+                                     'filetype': file_extension,
+                                     'filename': filename,
+                                     'valid_from': str(valid_from),
+                                     'valid_to': str(valid_to)}
+        else:
+            filename, file_extension = os.path.splitext(i)
+            content_dir_attrib[i] = {'type': 'File',
+                                     'filetype': file_extension,
+                                     'filename': filename,
+                                     }
+
     return content_dir_attrib
