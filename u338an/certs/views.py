@@ -16,7 +16,7 @@ def base(request):
 
 def download(request, file_name):
     pathcert = '{}{}'.format(ROOT_CRT_PATH, file_name)
-    cert_content = open(pathcert, 'r')
+    cert_content = open(pathcert, 'rb')
     mime_type, _ = mimetypes.guess_type(pathcert)
     response = HttpResponse(cert_content, content_type=mime_type)
     response['Content-Disposition'] = 'attachment; filename={}'.format(file_name)
